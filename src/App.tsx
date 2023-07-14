@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import "./assets/App.scss";
-import{ Result} from "./model/type"
+import{ Result, Search} from "./model/type"
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -12,6 +12,7 @@ import {
   nowPlayingMovies,
   fetchUser,
   fetchTrendingWeek,
+  fetchSearch,
  
 } from "./API/tmbdApi";
 import { ProgressStatus } from "./components/ProgressStatus";
@@ -30,6 +31,9 @@ function App() {
  
   const [data, setData] = useState<Result[]>([]);
   const [weeklyTrending, setWeeklyTrending] = useState<Result[]>([]);
+  const [search,setSearch]= useState<Search[]>([]);
+  const [query,setQuery]=useState<string>("");
+  const [toogle,setToogle]=useState<boolean>(true);
   const [popular, setPopular] = useState<Result[]>([]);
   const [nowPlaying, setNowPlaying] = useState<Result[]>([]);
 
@@ -44,7 +48,7 @@ useEffect(()=>{
      }
      getUserMovies()
  },[])
-  console.log("api",user);
+  // console.log("api",user);
   
 // 
   useEffect(() => {
@@ -55,7 +59,7 @@ useEffect(()=>{
     trendingWeekly();
   }, []);
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     const trendingToday = async () => {
@@ -77,6 +81,24 @@ useEffect(()=>{
     };
     trendingToday();
   }, [dayWeek]);
+
+  useEffect(()=>{
+    
+    const suggestion =async()=>{
+      if(query !== ""){
+      const data = await fetchSearch(query);
+      setSearch(data.slice(0,5))
+
+    } else {
+      setSearch([]);
+    }
+  };
+    suggestion();
+
+  },[query]);
+  console.log(search,"hiiii");
+  console.log(query,'jjjj');
+  
 
 
 
@@ -118,11 +140,6 @@ useEffect(()=>{
     };
     nowPlayinglist();
   }, []);
-
- 
-
-
-  
 
   return (
 
@@ -173,18 +190,37 @@ useEffect(()=>{
 
       {/* MAIN */}  
       <div className="w-full h-full flex flex-col overflow-y-scroll bg-black">
+
         <div className="w-full h-[150px]">
 
           <nav className="navbar w-full h-[85px] flex justify-between bg-black  items-center  top-0">
             <div className="w-full h-full flex items-center gap-6">
             <div className="flex ml-5">
-              <div className="left-arrow font-bold text-xl"><AiOutlineLeft size={25} className="text-gray-500 "/></div>
+              <div className="left-arrow fonundefinedt-bold text-xl"><AiOutlineLeft size={25} className="text-gray-500 "/></div>
               <div className="right-arrow"><AiOutlineRight  size={25} className="text-gray-500 "/></div>
             </div>
 
             <div className="search-bar relative ">
               <BsSearch size={20} className="absolute top-2 mt-1 left-3"/>
-              <input type="text" placeholder="Search Everything" className="pl-9 bg-gray-700 w-[560px] h-[45px] rounded-xl" />
+
+              <input type="text" placeholder="Search Everything" className="pl-9 bg-gray-700 w-[560px] h-[45px] rounded-xl" onChange={(e)=>setQuery(e.target.value)} onFocus={()=>setToogle(true)} />
+              {toogle && search.length > 0 &&
+               <div  className="absolute border z-10 w-full h-full">
+                {
+              search.map((item)=>(
+              <Link  to={`/moviereview/${item.id}`} className="flex h-[50px] border border-black bg-gray-700 top-3 w-full">      
+                      <img src={getImageUrl(item.poster_path)} alt="" className="w-5 h-5 rounded " />  
+                      <p className="text-white">{item.title}</p>
+              </Link>
+ 
+              ))
+            
+             
+                }
+                 </div>
+                 }
+              
+              
             </div>
             </div>
 

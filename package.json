@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.9",
     "ng-circle-progress": "^1.7.1",
     "react": "^18.2.0",
     "react-circular-progressbar": "^2.1.0",

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './assets/index.scss'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Moviereview } from './components/Moviereview.tsx'
+import Moviereview from './components/Moviereview.tsx'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

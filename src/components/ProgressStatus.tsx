@@ -6,7 +6,7 @@ export const ProgressStatus = ({percentage}:any) => {
     <div>
       <CircularProgressbar
     value={percentage}
-    text={`${percentage}%`}
+    text={`${Math.round(percentage)}%`}
     styles={{
       // Customize the root svg element
       root: {},

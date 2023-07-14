@@ -101,3 +101,46 @@ export const detailsMovies =async (id:number)=>{
     
   }
 }
+
+//video api
+
+export const fetchVideo = async (movie_id: number) => {
+  try {
+    const { data } = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${API_KEY}`
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//cast api
+
+
+export const fetchCast = async (movieId: number) => {
+  try {
+    const { data } = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}`
+    );
+    console.log(data,"pooor")
+    return data.cast;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//Searching
+
+export const fetchSearch = async (query: string) => {
+
+  try {
+    const { data } = await axios.get(
+      `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${API_KEY}`
+    );
+    console.log(data.results);
+    return data.results;
+  } catch (error) {
+    console.log(error);
+  }
+};
